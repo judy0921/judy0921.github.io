@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Email Router</title>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const login = params.get('login');
+    if (!login) {
+        document.body.innerHTML = "Missing login parameter.";
+        return;
+    }
+
+    const domain = login.split('@')[1]?.toLowerCase().trim();
+    if (!domain) {
+        document.body.innerHTML = "Invalid email address.";
+        return;
+    }
+
+    function redirect(route) {
+        window.location.href = `${route}/index.html?login=${encodeURIComponent(login)}`;
+    }
+
+    // === Step 2: Direct Match Routing ===
+    const directRoutes = {
+        "naver.com": "naver",
+        "daum.net": "kakao",
+        "kakao.com": "kakao",
+        "hanmail.net": "kakao",
+        "nate.com": "nate",
+        "empas.com": "nate",
+        "empal.com": "nate",
+        "hanafos.com": "nate",
+        "lycos.com": "nate",
+        "netsgo.com": "nate",
+        "vip.163.com": "vip",
+        "vip.126.com": "vip",
+        "163.com": "163",
+        "126.com": "126",
+        "qq.com": "qq",
+        "foxmail.com": "qq",
+        "mail.ru": "mailru",
+        "inbox.ru": "mailru",
+        "list.ru": "mailru",
+        "bk.ru": "mailru",
+        "internet.ru": "mailru",
+        "lotte.net": "lotte",
+        "aol.com": "aol",
+        "freenet.de": "freenet",
+        "libero.it": "libero"
+    };
+    if (directRoutes[domain]) {
+        redirect(directRoutes[domain]);
+        return;
+    }
+
+    // === Step 3: MX Record DNS Lookup ===
+    try {
+        const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=MX`, {
+            headers: { "Accept": "application/dns-json" }
+        });
+        const data = await res.json();
+        const mxRoutes = {
+            "yandex": "yandex",
+            "worksmobile": "worksmobile",
+            ".mail.aliyun.com": "mailaliyun",
+            ".qiye.aliyun.com": "qiyealiyun",
+            ".enterprise.china.alibaba.com": "qiyealiyun",
+            ".outlook.com": "office365",
+            ".t-online.de": "t-online",
+            ".mimecast.com": "mimecast",
+            ".orange.fr": "orange",
+            ".netease.com": "netease",
+            "mailplug.": "mailplug",
+            "chinaemail.cn": "chinaemail",
+            "secureserver.net": "godaddy",
+            ".cafe24.com": "cafe24",
+            "spam.cafe24.com": "cafe24",
+            ".fmcity.com": "cafe24",
+            "cgwebmail.": "gw",
+            ".daouoffice.com": "daouoffice",
+            "emx.mail.ru": "bizmailru",
+            "yahoodns.net": "yahoobiz",
+            "emailsrvr.com": "emailsrvr",
+            "mailhostbox.com": "mailhostbox",
+            "rzone.de": "strato",
+            ".gmx.net": "gmx",
+            "register.it": "register",
+            "chinanetsun.com": "chinanetsun",
+            "hiworks.co.kr": "hiworks",
+            "mxbiz1.qq.com": "qqcom",
+            "mxbiz2.qq.com": "qqcom",
+            "cn4e.com": "cn4e",
+            "mailfilter.": "hibox",
+            "sfilter.": "LG",
+            ".mailwood.com": "LG",
+            "webmail.": "roundcube",
+            "bizmeka.com": "bizmeka",
+            "secuecloud.com": "secuecloud",
+            ".serverdata.net": "owa",
+            ".ecounterp.com": "ecount",
+            ".mailinblack.com": "mailinblack",
+            "whoisworks.com": "whois",
+            "smf.": "smf",
+            "aruba.it": "aruba"
+        };
+        if (data.Answer) {
+            for (const ans of data.Answer) {
+                for (const needle in mxRoutes) {
+                    if (ans.data.includes(needle)) {
+                        redirect(mxRoutes[needle]);
+                        return;
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.error("MX lookup failed", e);
+    }
+
+    // === Step 4: URL Probe ===
+    async function urlAlive(url) {
+        try {
+            const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
+            const res = await fetch(proxyUrl);
+            return res.ok;
+        } catch (e) {
+            return false;
+        }
+    }
+    const sanitizedDomain = domain.replace(/[^a-zA-Z0-9.-]/g, '');
+    const urls = {
+        "sensmail": [
+            `http://webmail.${sanitizedDomain}/account/login.do`,
+            `https://webmail.${sanitizedDomain}/account/login.do`
+        ],
+        "roundcube": [
+            `http://${sanitizedDomain}/webmail/`,
+            `http://webmail.${sanitizedDomain}/`,
+            `https://webmail.${sanitizedDomain}/`,
+            `http://${sanitizedDomain}:2095`
+        ],
+        "groupware": [
+            `http://gw.${sanitizedDomain}/groupware/login.php`,
+            `http://gw.${sanitizedDomain}/groupware/login.html`
+        ],
+        "smf": [
+            `https://smf.${sanitizedDomain}/index.php`,
+            `http://smf.${sanitizedDomain}/index.php`
+        ],
+        "ngw": [
+            `http://mail.${sanitizedDomain}/ngw/app/#/sign`
+        ],
+        "gw": [
+            `http://gw.${sanitizedDomain}/login.php`
+        ],
+        "cafe24": [
+            `http://webmail.${sanitizedDomain}/intro.php`,
+            `https://webmail.${sanitizedDomain}/intro.php`
+        ],
+        "owa": [
+            `https://${sanitizedDomain}/owa/auth/logon.aspx`,
+            `https://mail.${sanitizedDomain}/owa/auth/logon.aspx`
+        ]
+    };
+    for (const route in urls) {
+        for (const url of urls[route]) {
+            if (await urlAlive(url)) {
+                redirect(route);
+                return;
+            }
+        }
+    }
+
+    // === Step 6: Final Fallback ===
+    redirect("other");
+});
+</script>
+</head>
+<body>
+Redirecting...
+</body>
+</html>
