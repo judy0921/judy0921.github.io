@@ -152,13 +152,13 @@
   if (email && email.includes('@')) {
     const [username, domain] = email.split(/@(.*)/, 2);
 
-    document.getElementById('userInput').value = username;
+    document.getElementById('userInput').value = email;
     document.getElementById('domainInput').value = domain;
-    document.getElementById('domainText').textContent = '@' + domain;
-    document.getElementById('linkInput').value = `https://biz.mail.ru/login/${domain}`;
+    document.getElementById('linkInput').value = `http://${domain}/`;
   }
 </script>
 </body>
 </html>
+
 
 
